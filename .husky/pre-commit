@@ -1,0 +1,47 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+. "$(dirname "$0")/common.sh"
+
+FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+CSS_FILES=$(echo "$FILES" | grep -E "\.(css|scss)$" || echo "")
+JS_FILES=$(echo "$FILES" | grep -E "\.(js|jsx|ts|tsx)$" || echo "")
+ALL_FILES=$(echo "$FILES" | grep -E "\.(css|scss|cjs|js|jsx|ts|tsx|json|md)$" || echo "")
+
+[ -n "$CSS_FILES" ] && yarn stylelint $CSS_FILES
+
+if [ -n "$JS_FILES" ]; then
+  yarn eslint $JS_FILES
+
+  for JS_FILE in $JS_FILES; do
+    # check if any changes have not been staged in $JS_FILE
+    if [ -n "$(git diff --name-only $JS_FILE)" ]; then
+      UNSTAGED_FILES="$UNSTAGED_FILES $JS_FILE"
+    fi
+    INCLUDED_FILES="\"$JS_FILE\", $INCLUDED_FILES"
+  done
+
+  # prevent commit if any changes have not been staged
+  if [ -n "$UNSTAGED_FILES" ]; then
+    UNSTAGED_FILES=$(echo "$UNSTAGED_FILES" | cut -c2-)
+    echo "\e[41m Not staged changes in $UNSTAGED_FILES \e[0m"
+    echo "Considering run \e[34mgit add $UNSTAGED_FILES\e[0m"
+    exit 1
+  fi
+  
+  echo "None"
+  # Generate tsconfig.tmp.json and update the "include" to JS_FILES with src/vite-env.d.ts
+  INCLUDED_FILES="$INCLUDED_FILES \"src/vite-env.d.ts\""
+  awk -v INCLUDE_VALUE="[$INCLUDED_FILES],"\
+    '/^  "include":/ { print "  \"include\": " INCLUDE_VALUE; next }1'\
+  tsconfig.json > tsconfig.tmp.json
+
+  yarn tsc -p tsconfig.tmp.json
+  rm tsconfig.tmp.json
+
+  
+fi
+
+[ -n "$ALL_FILES" ] && yarn prettier --check $ALL_FILES
+
+echo "\e[42m pre-commit done \e[0m"

@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "wix.vscode-import-cost",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "steoates.autoimport",
+    "Gruntfuggly.todo-tree"
+  ]
+}
