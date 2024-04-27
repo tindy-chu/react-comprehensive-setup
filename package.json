@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "yarn postinstall && yarn generate-env && concurrently 'yarn vite --host' 'yarn watch-css' 'yarn watch-js' 'yarn watch-env'",
-    "build": "yarn fix && vite build",
+    "build": "yarn fix && vite build && cp dist/index.html dist/404.html",
     "preview": "vite preview",
     "prettier-validate": "prettier --check .",
     "prettier-fix": "prettier --write --list-different .",
@@ -16,10 +16,12 @@
     "es-fix": "eslint . --ext ts,tsx --fix && tsc --noEmit",
     "validate": "yarn style-validate; yarn es-validate; yarn prettier-validate",
     "fix": "yarn style-fix; yarn es-fix; yarn prettier-fix",
-    "watch-css": "chokidar 'src/**/*.{css,scss}' -c 'yarn style-validate'",
-    "watch-js": "chokidar 'src/**/*.{js,jsx,ts,tsx}' -c 'yarn es-validate'",
+    "watch-css": "chokidar 'src/**/*.{css,scss}' -c 'yarn style-fix'",
+    "watch-js": "chokidar 'src/**/*.{js,jsx,ts,tsx}' -c 'yarn es-fix'",
     "watch-env": "chokidar '.env' -c 'yarn generate-env'",
-    "generate-env": "sh scripts/env.sh local"
+    "generate-env": "sh scripts/env.sh local",
+    "create-component": "sh scripts/component.sh",
+    "create-page": "sh scripts/page.sh"
   },
   "dependencies": {
     "react": "^18.2.0",
