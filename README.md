@@ -25,7 +25,7 @@ This template provides a comprehensive setup for a team to work on a React proje
 - [Chokidar CLI](https://www.npmjs.com/package/chokidar-cli) watches for file changes and performs actions automatically.
 - We use these tools to automatically lint files once the files have been update.
 
-## Dockerize and environment variable
+## Dockerize and Environment Variable
 
 - The env.js is imported in the ./index.html, we can get the value by:
 
@@ -35,7 +35,7 @@ window._env_[envKey]
 
 - For local development, public/env.js is generated when we run 'yarn dev' or update ./.env.
 - For production, environment variables in the Docker container are combined with ./env to create env.js.
-- That means we can update env.js in the container executing by:
+- That means we can update env.js in the container by executing:
 
 ```bash
 docker run -e HELLO=testing react-comprehensive-setup
