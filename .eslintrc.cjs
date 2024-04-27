@@ -41,6 +41,8 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     'import/first': 'error',
     'import/no-duplicates': 'error',
+    'no-param-reassign': 'error',
+    'max-params': '["error", 3]',
     curly: ['error', 'multi'],
   },
   settings: {
