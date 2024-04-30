@@ -42,7 +42,7 @@ module.exports = {
     'import/first': 'error',
     'import/no-duplicates': 'error',
     'no-param-reassign': 'error',
-    'max-params': '["error", 3]',
+    'max-params': ['error', 3],
     curly: ['error', 'multi'],
   },
   settings: {
