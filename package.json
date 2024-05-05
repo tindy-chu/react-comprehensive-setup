@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "yarn postinstall && yarn generate-env && yarn validate; concurrently 'yarn vite --host' 'yarn watch-css' 'yarn watch-js' 'yarn watch-env'",
-    "build": "yarn fix && vite build && cp dist/index.html dist/404.html",
+    "build": "yarn validate && vite build && cp dist/index.html dist/404.html",
     "preview": "vite preview",
     "prettier-validate": "prettier --check .",
     "prettier-fix": "prettier --write --list-different .",
